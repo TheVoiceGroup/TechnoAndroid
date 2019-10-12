@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         preferenceHelper = new PreferenceHelper(this, "APPNAME");
-        preferenceHelper.Save("Key", "Value");
-        String savedvalue = preferenceHelper.GetSavedValue("Key");
+        preferenceHelper.SaveString("Key", "Value");
+        String savedvalue = preferenceHelper.GetString("Key", "");
     }
 }
