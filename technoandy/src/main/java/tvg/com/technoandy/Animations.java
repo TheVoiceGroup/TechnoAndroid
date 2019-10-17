@@ -8,13 +8,7 @@ import android.widget.LinearLayout;
 
 public class Animations {
 
-    private Context context;
-
-    public Animations(Context context){
-        this.context = context;
-    }
-
-    public void expand(final View v, long duration) {
+    public static void expand(final View v, long duration) {
         int matchParentMeasureSpec = View.MeasureSpec.makeMeasureSpec(((View) v.getParent()).getWidth(), View.MeasureSpec.EXACTLY);
         int wrapContentMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         v.measure(matchParentMeasureSpec, wrapContentMeasureSpec);
@@ -46,7 +40,7 @@ public class Animations {
         v.startAnimation(a);
     }
 
-    public void collapse(final View v, long duration) {
+    public static void collapse(final View v, long duration) {
         final int initialHeight = v.getMeasuredHeight();
 
         Animation a = new Animation() {
