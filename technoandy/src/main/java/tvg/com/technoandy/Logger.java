@@ -82,7 +82,7 @@ public class Logger {
                     objJson = jsonArray.getJSONObject(0);
                     String UserID = objJson.getString("ID");
                     String Status = objJson.getString("STATUS");
-                    SAVEUSER(UserID)
+                    SAVEUSER(UserID);
                     preferenceHelper.SaveString("ADSTATUS",Status);
 //                        strMessage = objJson.getString(Constant.MSG);
 //                        Constant.GET_SUCCESS_MSG = objJson.getInt(Constant.SUCCESS);
