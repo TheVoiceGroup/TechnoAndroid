@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.scottyab.rootbeer.RootBeer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,11 +24,13 @@ public class Logger {
     private String API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER;
     PreferenceHelper preferenceHelper;
     private String ARRAYNAME;
+    RootBeer rootBeer;
 
     public Logger(Context context, String PreferenceHelperMainKEY, String ARRAYNAME){
         this.context = context;
         preferenceHelper = new PreferenceHelper(context, PreferenceHelperMainKEY);
         this.ARRAYNAME = ARRAYNAME;
+        rootBeer = new RootBeer(context);
     }
 
     public void LOGUSERDEVICEINFO(String USERURL, String TOKEN){
@@ -58,7 +61,7 @@ public class Logger {
         params.put("brand", BRAND);
         params.put("display", DISPLAY);
         params.put("manufacturer", MANUFACTURER);
-//        params.put("device_rooted", isRooted());
+        params.put("device_rooted", rootBeer.isRooted());
 
         client.get(USERURL, params, new AsyncHttpResponseHandler() {
 
