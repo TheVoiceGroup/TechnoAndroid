@@ -22,11 +22,12 @@ public class Logger {
     private Context context;
     private String API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER;
     PreferenceHelper preferenceHelper;
+    private String ARRAYNAME;
 
-    public Logger(Context context, String PreferenceHelperMainKEY){
+    public Logger(Context context, String PreferenceHelperMainKEY, String ARRAYNAME){
         this.context = context;
         preferenceHelper = new PreferenceHelper(context, PreferenceHelperMainKEY);
-
+        this.ARRAYNAME = ARRAYNAME;
     }
 
     public void LOGUSERDEVICEINFO(String USERURL, String TOKEN){
@@ -71,7 +72,7 @@ public class Logger {
                 String result = new String(responseBody);
                 try {
                     JSONObject mainJson = new JSONObject(result);
-                    JSONArray jsonArray = mainJson.getJSONArray("QURAN");
+                    JSONArray jsonArray = mainJson.getJSONArray(ARRAYNAME);
                     JSONObject objJson;
 //                    for (int i = 0; i < jsonArray.length(); i++) {
                     objJson = jsonArray.getJSONObject(0);
@@ -113,7 +114,7 @@ public class Logger {
                 String result = new String(responseBody);
                 try {
                     JSONObject mainJson = new JSONObject(result);
-                    JSONArray jsonArray = mainJson.getJSONArray("QURAN");
+                    JSONArray jsonArray = mainJson.getJSONArray(ARRAYNAME);
                     JSONObject objJson;
 //                    for (int i = 0; i < jsonArray.length(); i++) {
                     objJson = jsonArray.getJSONObject(0);
