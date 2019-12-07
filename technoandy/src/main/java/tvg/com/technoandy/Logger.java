@@ -1,7 +1,6 @@
 package tvg.com.technoandy;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.provider.SyncStateContract;
 import android.widget.Toast;
@@ -82,7 +81,7 @@ public class Logger {
                     objJson = jsonArray.getJSONObject(0);
                     String UserID = objJson.getString("ID");
                     String Status = objJson.getString("STATUS");
-                    SAVEUSER(UserID);
+                    preferenceHelper.SaveString("ADUSERID",UserID);
                     preferenceHelper.SaveString("ADSTATUS",Status);
 //                        strMessage = objJson.getString(Constant.MSG);
 //                        Constant.GET_SUCCESS_MSG = objJson.getInt(Constant.SUCCESS);
@@ -103,8 +102,7 @@ public class Logger {
     public void LOGACTIVITY(String URL, String ACTIVITYTYPE){
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        String USER = RETURNUSER();
-        params.put("user_id", USER);
+        params.put("user_id", preferenceHelper.GetString("ADUSERID", "0"));
         params.put("activity_type", ACTIVITYTYPE);
 
         client.get(URL, params, new AsyncHttpResponseHandler() {
@@ -146,24 +144,6 @@ public class Logger {
 
     public String RETURNADSTATUS(){
         return preferenceHelper.GetString("ADSTATUS", "ACTIVE");
-    }
-
-    public String RETURNUSER(){
-        SharedPreferences preferences = context.getSharedPreferences("TECHNOANDYPRIVATEKEY", Context.MODE_PRIVATE);
-        return preferences.getString("USERID", "0");
-    }
-
-    public void SAVEUSER(String Value){
-        SharedPreferences preferences = context.getSharedPreferences("TECHNOANDYPRIVATEKEY", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("USERID", Value);
-        editor.apply();
-        editor.commit();
-    }
-
-    public String GetString(String DefaultValue){
-        SharedPreferences preferences = context.getSharedPreferences("TECHNOANDYPRIVATEKEY", Context.MODE_PRIVATE);
-        return preferences.getString("USERID", DefaultValue);
     }
 
 }
