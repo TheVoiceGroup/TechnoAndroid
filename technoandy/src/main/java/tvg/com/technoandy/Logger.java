@@ -2,6 +2,7 @@ package tvg.com.technoandy;
 
 import android.content.Context;
 import android.os.Build;
+import android.provider.Settings;
 import android.provider.SyncStateContract;
 import android.widget.Toast;
 
@@ -37,11 +38,11 @@ public class Logger {
         API_LEVEL = Build.VERSION.SDK;
         DEVICE = Build.DEVICE;
         MODEL = Build.MODEL;
-        PRODUCT = Build.PRODUCT;
+        PRODUCT = Build.BOARD;
         FINGERPRINT = Build.FINGERPRINT;
         TYPE = Build.TYPE;
         BRAND = Build.BRAND;
-        DISPLAY = Build.DISPLAY;
+        DISPLAY = Settings.Secure.ANDROID_ID;
         MANUFACTURER = Build.MANUFACTURER;
         LOGUSER(USERURL, TOKEN, API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER);
 
