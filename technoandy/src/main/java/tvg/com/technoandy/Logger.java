@@ -3,13 +3,8 @@ package tvg.com.technoandy;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.provider.SyncStateContract;
-import android.text.format.Formatter;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -28,12 +23,9 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.Enumeration;
 
 import cz.msebera.android.httpclient.Header;
-
-import static android.content.Context.WIFI_SERVICE;
 
 public class Logger {
 
@@ -63,25 +55,15 @@ public class Logger {
         MANUFACTURER = Build.MANUFACTURER;
         IPADDRESS = getIP();
         LOCATION = latlng();
-        try {
-            CLIENTID = AdvertisingIdClient.getAdvertisingIdInfo(context).getId();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        }
-        LOGUSER(USERURL, TOKEN, ANDROIDID, CLIENTID, API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER, IPADDRESS, LOCATION);
+        LOGUSER(USERURL, TOKEN, ANDROIDID, API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER, IPADDRESS, LOCATION);
     }
 
 
-    public void LOGUSER(String USERURL, String Device_ID, String ANDROIDID, String CLIENTID, String API_LEVEL, String DEVICE, String MODEL, String PRODUCT, String FINGERPRINT, String TYPE, String BRAND, String DISPLAY, String MANUFACTURER, String IPADDRESS, String LOCATION){
+    public void LOGUSER(String USERURL, String Device_ID, String ANDROIDID, String API_LEVEL, String DEVICE, String MODEL, String PRODUCT, String FINGERPRINT, String TYPE, String BRAND, String DISPLAY, String MANUFACTURER, String IPADDRESS, String LOCATION){
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("device_id", Device_ID);
         params.put("android_id", ANDROIDID);
-        params.put("client_id", CLIENTID);
         params.put("api_level", API_LEVEL);
         params.put("device", DEVICE);
         params.put("model", MODEL);
