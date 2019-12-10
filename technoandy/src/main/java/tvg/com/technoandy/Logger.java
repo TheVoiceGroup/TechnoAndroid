@@ -171,25 +171,7 @@ public class Logger {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String result = new String(responseBody);
-                try {
-                    JSONObject mainJson = new JSONObject(result);
-                    JSONArray jsonArray = mainJson.getJSONArray(ARRAYNAME);
-                    JSONObject objJson;
-//                    for (int i = 0; i < jsonArray.length(); i++) {
-                    objJson = jsonArray.getJSONObject(0);
-//                    String UserID = objJson.getString("ID");
-//                    String Status = objJson.getString("STATUS");
-//                    preferenceHelper.SAVEUSERID(UserID);
-//                    preferenceHelper.SAVEADSTATUS(Status);
-//                    Ad();
-//                        strMessage = objJson.getString(Constant.MSG);
-//                        Constant.GET_SUCCESS_MSG = objJson.getInt(Constant.SUCCESS);
-//                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                preferenceHelper.SaveString("ADSTATUS","BLOCKED");
             }
 
             @Override
