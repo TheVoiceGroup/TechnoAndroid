@@ -156,6 +156,49 @@ public class Logger {
         });
     }
 
+    public void LOGSTATUS(String URL, String STATUS){
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("user_id", preferenceHelper.GetString("ADUSERID", "0"));
+        params.put("status", STATUS);
+
+        client.get(URL, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                try {
+                    JSONObject mainJson = new JSONObject(result);
+                    JSONArray jsonArray = mainJson.getJSONArray(ARRAYNAME);
+                    JSONObject objJson;
+//                    for (int i = 0; i < jsonArray.length(); i++) {
+                    objJson = jsonArray.getJSONObject(0);
+//                    String UserID = objJson.getString("ID");
+//                    String Status = objJson.getString("STATUS");
+//                    preferenceHelper.SAVEUSERID(UserID);
+//                    preferenceHelper.SAVEADSTATUS(Status);
+//                    Ad();
+//                        strMessage = objJson.getString(Constant.MSG);
+//                        Constant.GET_SUCCESS_MSG = objJson.getInt(Constant.SUCCESS);
+//                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
     public String RETURNADSTATUS(){
         return preferenceHelper.GetString("ADSTATUS", "ACTIVE");
     }
