@@ -3,8 +3,13 @@ package tvg.com.technoandy;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.text.format.Formatter;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -23,14 +28,18 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+
+import static android.content.Context.WIFI_SERVICE;
 
 public class Logger {
 
     private Context context;
-    private String API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER, ANDROIDID, CLIENTID, IPADDRESS, LOCATION;
+    private String API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER, ANDROIDID;
     PreferenceHelper preferenceHelper;
     private String ARRAYNAME;
     RootBeer rootBeer;
@@ -53,13 +62,11 @@ public class Logger {
         BRAND = Build.BRAND;
         DISPLAY = Build.DISPLAY;
         MANUFACTURER = Build.MANUFACTURER;
-        IPADDRESS = getIP();
-        LOCATION = latlng();
-        LOGUSER(USERURL, TOKEN, ANDROIDID, API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER, IPADDRESS, LOCATION);
+        LOGUSER(USERURL, TOKEN, ANDROIDID, API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER);
     }
 
 
-    public void LOGUSER(String USERURL, String Device_ID, String ANDROIDID, String API_LEVEL, String DEVICE, String MODEL, String PRODUCT, String FINGERPRINT, String TYPE, String BRAND, String DISPLAY, String MANUFACTURER, String IPADDRESS, String LOCATION){
+    public void LOGUSER(String USERURL, String Device_ID, String ANDROIDID, String API_LEVEL, String DEVICE, String MODEL, String PRODUCT, String FINGERPRINT, String TYPE, String BRAND, String DISPLAY, String MANUFACTURER){
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("device_id", Device_ID);
@@ -73,8 +80,6 @@ public class Logger {
         params.put("brand", BRAND);
         params.put("display", DISPLAY);
         params.put("manufacturer", MANUFACTURER);
-        params.put("ip_address", IPADDRESS);
-        params.put("location", LOCATION);
         params.put("device_rooted", rootBeer.isRooted());
 
         client.get(USERURL, params, new AsyncHttpResponseHandler() {
@@ -153,40 +158,5 @@ public class Logger {
 
     public String RETURNADSTATUS(){
         return preferenceHelper.GetString("ADSTATUS", "ACTIVE");
-    }
-
-
-//    public String getWifiIP() {
-//        WifiManager wifiMgr = (WifiManager) context.getSystemService(WIFI_SERVICE);
-//        WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
-//        int ip = wifiInfo.getIpAddress();
-//        return  Formatter.formatIpAddress(ip);
-//    }
-
-    public String getIP() {
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
-                        return inetAddress.getHostAddress();
-                    }
-                }
-            }
-        } catch (SocketException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public String latlng(){
-        String service = Context.LOCATION_SERVICE;
-        LocationManager locationManager = (LocationManager) context.getSystemService(service);
-        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        String latitude = String.valueOf(location.getLatitude());
-        String longitude = String.valueOf(location.getLongitude());
-        String CurrentLocation = "Lat:" + latitude + " , " + "Lng:" + longitude;
-        return CurrentLocation;
     }
 }
