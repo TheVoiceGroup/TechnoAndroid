@@ -51,7 +51,7 @@ public class Logger {
         rootBeer = new RootBeer(context);
     }
 
-    public void LOGUSERDEVICEINFO(String USERURL, String TOKEN){
+    public void LOGUSERDEVICEINFO(String USERURL, String TOKEN, String APPID, String APPVERSION, String CLIENTID){
         ANDROIDID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         API_LEVEL = Build.VERSION.SDK;
         DEVICE = Build.DEVICE;
@@ -62,13 +62,15 @@ public class Logger {
         BRAND = Build.BRAND;
         DISPLAY = Build.DISPLAY;
         MANUFACTURER = Build.MANUFACTURER;
-        LOGUSER(USERURL, TOKEN, ANDROIDID, API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER);
+        LOGUSER(USERURL, APPID, APPVERSION, TOKEN, ANDROIDID, API_LEVEL, DEVICE, MODEL, PRODUCT, FINGERPRINT, TYPE, BRAND, DISPLAY, MANUFACTURER, CLIENTID);
     }
 
 
-    public void LOGUSER(String USERURL, String Device_ID, String ANDROIDID, String API_LEVEL, String DEVICE, String MODEL, String PRODUCT, String FINGERPRINT, String TYPE, String BRAND, String DISPLAY, String MANUFACTURER){
+    public void LOGUSER(String USERURL, String APPID, String APPVERSION, String Device_ID, String ANDROIDID, String API_LEVEL, String DEVICE, String MODEL, String PRODUCT, String FINGERPRINT, String TYPE, String BRAND, String DISPLAY, String MANUFACTURER, String CLIENTID){
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
+        params.put("app_id", APPID);
+        params.put("app_version", APPVERSION);
         params.put("device_id", Device_ID);
         params.put("android_id", ANDROIDID);
         params.put("api_level", API_LEVEL);
@@ -80,6 +82,7 @@ public class Logger {
         params.put("brand", BRAND);
         params.put("display", DISPLAY);
         params.put("manufacturer", MANUFACTURER);
+        params.put("client_id", CLIENTID);
         params.put("device_rooted", rootBeer.isRooted());
 
         client.get(USERURL, params, new AsyncHttpResponseHandler() {
