@@ -5,8 +5,8 @@
 ### Advertisement
 
     Advertisement advertisement = new Advertisement(this);
-        advertisement.LoadInterstitialAd(ADTYPE.ADMOB, "ca-app-pub-3940256099942544/1033173712");
-        advertisement.ShowBannerAd(ADTYPE.ADMOB, ad_view, "ca-app-pub-3940256099942544/6300978111"); //ad_view must be LinearLayout
+        advertisement.LoadInterstitialAd(ADTYPE.ADMOB, "Ad ID");
+        advertisement.ShowBannerAd(ADTYPE.ADMOB, ad_view, "Ad ID"); //ad_view must be LinearLayout
 
         void ShowAd(){
                 advertisement.ShowInterstitialAD(ADTYPE.ADMOB);
