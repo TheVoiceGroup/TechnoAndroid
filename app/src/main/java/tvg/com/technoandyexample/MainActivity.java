@@ -3,20 +3,66 @@ package tvg.com.technoandyexample;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import tvg.com.technoandy.ADTYPE;
+import tvg.com.technoandy.Advertisement;
+import tvg.com.technoandy.AdvertisementListener;
 import tvg.com.technoandy.PreferenceHelper;
 
 public class MainActivity extends AppCompatActivity {
 
     PreferenceHelper preferenceHelper;
+    Button btn_showad;
+    Advertisement advertisement;
+    LinearLayout ad_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        preferenceHelper = new PreferenceHelper(this, "APPNAME");
-        preferenceHelper.SaveString("Key", "Value");
-        String savedvalue = preferenceHelper.GetString("Key", "");
+        btn_showad = findViewById(R.id.btn_showad);
+        ad_view = findViewById(R.id.ad_view);
+        advertisement = new Advertisement(this);
+        advertisement.LoadInterstitialAd(ADTYPE.ADMOB, "ca-app-pub-3940256099942544/1033173712");
+        advertisement.ShowBannerAd(ADTYPE.ADMOB, ad_view, "ca-app-pub-3940256099942544/6300978111");
+
+        btn_showad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                advertisement.ShowInterstitialAD(ADTYPE.ADMOB);
+            }
+        });
+
+        advertisement.advertismentListener = new AdvertisementListener() {
+            @Override
+            public void onAdLoaded() {
+                Toast.makeText(MainActivity.this, "Ad Loaded", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdClicked() {
+                Toast.makeText(MainActivity.this, "Ad Clicked", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdClosed() {
+                Toast.makeText(MainActivity.this, "Ad Closed", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailed(String Error) {
+                Toast.makeText(MainActivity.this, "Ad Failed", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOff() {
+                Toast.makeText(MainActivity.this, "Ad Off", Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 }

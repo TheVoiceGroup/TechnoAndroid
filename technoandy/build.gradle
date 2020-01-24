@@ -34,8 +34,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.loopj.android:android-async-http:1.4.9'
-    implementation 'com.google.android.gms:play-services-ads:15.0.1'
-    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
     implementation 'com.scottyab:rootbeer-lib:0.0.7'
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.firebase:firebase-ads:17.0.0'
+    implementation('com.facebook.android:audience-network-sdk:5.5.0') {
+        exclude group: "com.google.android.gms"
+    }
 }

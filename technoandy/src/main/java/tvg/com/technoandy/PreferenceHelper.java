@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -13,6 +15,9 @@ public class PreferenceHelper {
     private Context context;
     private String MainKey;
     private Gson JSON = new Gson();
+    Type typeOfObject = new TypeToken<Object>() {
+    }.getType();
+
 
     public PreferenceHelper(Context context, String MainKey){
         this.context = context;
