@@ -3,7 +3,8 @@
 #### Note: This is the private library of TheVoiceGroup. Only TheVoiceGroup's Employees are allowed to use this. Any issue or for further details email at support@thevoicegroup.com
 
 ### Advertisement
-     Advertisement advertisement = new Advertisement(this);
+
+    Advertisement advertisement = new Advertisement(this);
         advertisement.LoadInterstitialAd(ADTYPE.ADMOB, "ca-app-pub-3940256099942544/1033173712");
         advertisement.ShowBannerAd(ADTYPE.ADMOB, ad_view, "ca-app-pub-3940256099942544/6300978111"); //ad_view must be LinearLayout
 
