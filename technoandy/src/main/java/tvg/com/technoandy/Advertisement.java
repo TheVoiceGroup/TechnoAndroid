@@ -72,6 +72,7 @@ public class Advertisement {
                 if (interstitialAdmob.isLoaded() && interstitialAdmob!=null){
                     interstitialAdmob.show();
                 }else {
+                    advertismentListener.onAdFailed("Ad Not Loaded");
                     if (interstitialAdmob==null){
                         Log.d("ADMOB", "Interstitial Ad is not Initialized");
                     } else {
@@ -83,6 +84,7 @@ public class Advertisement {
                 if (interstitialAdfb.isAdLoaded() && interstitialAdfb!=null){
                     interstitialAdfb.show();
                 }else {
+                    advertismentListener.onAdFailed("Ad Not Loaded");
                     if (interstitialAdfb==null){
                         Log.d("FACEBOOK", "Interstitial Ad is not Initialized");
                     } else {
@@ -91,6 +93,7 @@ public class Advertisement {
                 }
                 break;
             case OFF:
+                advertismentListener.onAdOff();
                 Log.d("OFF", "AD IS OFF");
                 break;
         }
@@ -108,7 +111,7 @@ public class Advertisement {
 
                     @Override
                     public void onAdOpened() {
-
+                        advertismentListener.onAdOpened();
                     }
 
                     public void onAdClosed() {
@@ -131,7 +134,7 @@ public class Advertisement {
                 interstitialAdfb.setAdListener(new InterstitialAdListener() {
                     @Override
                     public void onInterstitialDisplayed(com.facebook.ads.Ad ad) {
-
+                        advertismentListener.onAdOpened();
                     }
 
                     @Override
@@ -161,7 +164,6 @@ public class Advertisement {
                 });
                 break;
             case OFF:
-                advertismentListener.onAdOff();
                 break;
 
         }
