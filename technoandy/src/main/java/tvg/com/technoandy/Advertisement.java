@@ -69,27 +69,35 @@ public class Advertisement {
     public void ShowInterstitialAD(ADTYPE type){
         switch (type){
             case ADMOB:
-                if (interstitialAdmob.isLoaded() && interstitialAdmob!=null){
-                    interstitialAdmob.show();
-                }else {
-                    advertismentListener.onAdFailed("Ad Not Loaded");
-                    if (interstitialAdmob==null){
-                        Log.d("ADMOB", "Interstitial Ad is not Initialized");
+                if (interstitialAdmob!=null) {
+                    if (interstitialAdmob.isLoaded() && interstitialAdmob != null) {
+                        interstitialAdmob.show();
                     } else {
-                        Log.d("ADMOB", "Interstitial Ad is not loaded");
+                        advertismentListener.onAdFailed("Ad Not Loaded");
+                        if (interstitialAdmob == null) {
+                            Log.d("ADMOB", "Interstitial Ad is not Initialized");
+                        } else {
+                            Log.d("ADMOB", "Interstitial Ad is not loaded");
+                        }
                     }
+                } else {
+                    advertismentListener.onAdFailed("Ad is not initialized");
                 }
                 break;
             case FACEBOOK:
-                if (interstitialAdfb.isAdLoaded() && interstitialAdfb!=null){
-                    interstitialAdfb.show();
-                }else {
-                    advertismentListener.onAdFailed("Ad Not Loaded");
-                    if (interstitialAdfb==null){
-                        Log.d("FACEBOOK", "Interstitial Ad is not Initialized");
+                if (interstitialAdfb!=null) {
+                    if (interstitialAdfb.isAdLoaded() && interstitialAdfb != null) {
+                        interstitialAdfb.show();
                     } else {
-                        Log.d("FACEBOOK", "Interstitial Ad is not loaded");
+                        advertismentListener.onAdFailed("Ad Not Loaded");
+                        if (interstitialAdfb == null) {
+                            Log.d("FACEBOOK", "Interstitial Ad is not Initialized");
+                        } else {
+                            Log.d("FACEBOOK", "Interstitial Ad is not loaded");
+                        }
                     }
+                } else {
+                    advertismentListener.onAdFailed("Ad is not initialized");
                 }
                 break;
             case OFF:
