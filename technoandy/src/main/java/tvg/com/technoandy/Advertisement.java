@@ -19,6 +19,7 @@ public class Advertisement {
     private InterstitialAd interstitialAdmob;
     private com.facebook.ads.InterstitialAd interstitialAdfb;
     public AdvertisementListener advertismentListener;
+    boolean isFailed = false;
 
     public Advertisement(Context context){
         this.context = context;
@@ -73,7 +74,9 @@ public class Advertisement {
                     if (interstitialAdmob.isLoaded() && interstitialAdmob != null) {
                         interstitialAdmob.show();
                     } else {
-                        advertismentListener.onAdNotLoaded(type);
+                        if (!isFailed) {
+                            advertismentListener.onAdNotLoaded(type);
+                        }
                         if (interstitialAdmob == null) {
                             Log.d("ADMOB", "Interstitial Ad is not Initialized");
                         } else {
@@ -89,7 +92,9 @@ public class Advertisement {
                     if (interstitialAdfb.isAdLoaded() && interstitialAdfb != null) {
                         interstitialAdfb.show();
                     } else {
-                        advertismentListener.onAdNotLoaded(type);
+                        if (!isFailed) {
+                            advertismentListener.onAdNotLoaded(type);
+                        }
                         if (interstitialAdfb == null) {
                             Log.d("FACEBOOK", "Interstitial Ad is not Initialized");
                         } else {
@@ -113,6 +118,7 @@ public class Advertisement {
                 interstitialAdmob.setAdListener(new AdListener() {
                     @Override
                     public void onAdLoaded() {
+                        isFailed = false;
                         advertismentListener.onAdLoaded(type);
 
                     }
@@ -129,6 +135,7 @@ public class Advertisement {
 
                     @Override
                     public void onAdFailedToLoad(int errorCode) {
+                        isFailed = true;
                         advertismentListener.onAdFailed(type,"Error: " + String.valueOf(errorCode));
                     }
 
@@ -152,11 +159,13 @@ public class Advertisement {
 
                     @Override
                     public void onError(com.facebook.ads.Ad ad, AdError adError) {
+                        isFailed = true;
                         advertismentListener.onAdFailed(type,adError.getErrorMessage());
                     }
 
                     @Override
                     public void onAdLoaded(com.facebook.ads.Ad ad) {
+                        isFailed = false;
                         advertismentListener.onAdLoaded(type);
                     }
 
