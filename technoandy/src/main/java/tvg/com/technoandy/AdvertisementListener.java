@@ -1,10 +1,11 @@
 package tvg.com.technoandy;
 
 public interface AdvertisementListener {
-    void onAdOpened();
-    void onAdLoaded();
-    void onAdClicked();
-    void onAdClosed();
-    void onAdFailed(String Error);
-    void onAdOff();
+    void onAdOpened(ADTYPE adtype);
+    void onAdLoaded(ADTYPE adtype);
+    void onAdClicked(ADTYPE adtype);
+    void onAdClosed(ADTYPE adtype);
+    void onAdFailed(ADTYPE adtype, String Error);
+    void onAdNotLoaded(ADTYPE adtype);
+    void onAdOff(ADTYPE adtype);
 }
