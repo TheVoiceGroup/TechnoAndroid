@@ -75,7 +75,7 @@ public class Advertisement {
                         interstitialAdmob.show();
                     } else {
                         if (!isFailed) {
-                            advertismentListener.onAdNotLoaded(type);
+                            if (advertismentListener!=null) advertismentListener.onAdNotLoaded(type);
                         }
                         if (interstitialAdmob == null) {
                             Log.d("ADMOB", "Interstitial Ad is not Initialized");
@@ -84,7 +84,7 @@ public class Advertisement {
                         }
                     }
                 } else {
-                    advertismentListener.onAdFailed(type,"Ad is not initialized");
+                    if (advertismentListener!=null) advertismentListener.onAdFailed(type,"Ad is not initialized");
                 }
                 break;
             case FACEBOOK:
@@ -93,7 +93,7 @@ public class Advertisement {
                         interstitialAdfb.show();
                     } else {
                         if (!isFailed) {
-                            advertismentListener.onAdNotLoaded(type);
+                            if (advertismentListener!=null) advertismentListener.onAdNotLoaded(type);
                         }
                         if (interstitialAdfb == null) {
                             Log.d("FACEBOOK", "Interstitial Ad is not Initialized");
@@ -102,11 +102,11 @@ public class Advertisement {
                         }
                     }
                 } else {
-                    advertismentListener.onAdFailed(type,"Ad is not initialized");
+                    if (advertismentListener!=null) advertismentListener.onAdFailed(type,"Ad is not initialized");
                 }
                 break;
             case OFF:
-                advertismentListener.onAdOff(type);
+                if (advertismentListener!=null) advertismentListener.onAdOff(type);
                 Log.d("OFF", "AD IS OFF");
                 break;
         }
@@ -119,29 +119,29 @@ public class Advertisement {
                     @Override
                     public void onAdLoaded() {
                         isFailed = false;
-                        advertismentListener.onAdLoaded(type);
+                        if (advertismentListener!=null) advertismentListener.onAdLoaded(type);
 
                     }
 
                     @Override
                     public void onAdOpened() {
-                        advertismentListener.onAdOpened(type);
+                        if (advertismentListener!=null) advertismentListener.onAdOpened(type);
                     }
 
                     public void onAdClosed() {
-                        advertismentListener.onAdClosed(type);
+                        if (advertismentListener!=null) advertismentListener.onAdClosed(type);
 
                     }
 
                     @Override
                     public void onAdFailedToLoad(int errorCode) {
                         isFailed = true;
-                        advertismentListener.onAdFailed(type,"Error: " + String.valueOf(errorCode));
+                        if (advertismentListener!=null) advertismentListener.onAdFailed(type,"Error: " + String.valueOf(errorCode));
                     }
 
                     @Override
                     public void onAdClicked() {
-                        advertismentListener.onAdClicked(type);
+                        if (advertismentListener!=null) advertismentListener.onAdClicked(type);
                     }
                 });
                 break;
@@ -149,29 +149,29 @@ public class Advertisement {
                 interstitialAdfb.setAdListener(new InterstitialAdListener() {
                     @Override
                     public void onInterstitialDisplayed(com.facebook.ads.Ad ad) {
-                        advertismentListener.onAdOpened(type);
+                        if (advertismentListener!=null) advertismentListener.onAdOpened(type);
                     }
 
                     @Override
                     public void onInterstitialDismissed(com.facebook.ads.Ad ad) {
-                        advertismentListener.onAdClosed(type);
+                        if (advertismentListener!=null) advertismentListener.onAdClosed(type);
                     }
 
                     @Override
                     public void onError(com.facebook.ads.Ad ad, AdError adError) {
                         isFailed = true;
-                        advertismentListener.onAdFailed(type,adError.getErrorMessage());
+                        if (advertismentListener!=null) advertismentListener.onAdFailed(type,adError.getErrorMessage());
                     }
 
                     @Override
                     public void onAdLoaded(com.facebook.ads.Ad ad) {
                         isFailed = false;
-                        advertismentListener.onAdLoaded(type);
+                        if (advertismentListener!=null) advertismentListener.onAdLoaded(type);
                     }
 
                     @Override
                     public void onAdClicked(com.facebook.ads.Ad ad) {
-                        advertismentListener.onAdClicked(type);
+                        if (advertismentListener!=null) advertismentListener.onAdClicked(type);
                     }
 
                     @Override
