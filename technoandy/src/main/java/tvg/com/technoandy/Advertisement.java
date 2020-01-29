@@ -76,6 +76,8 @@ public class Advertisement {
                     } else {
                         if (!isFailed) {
                             if (advertismentListener!=null) advertismentListener.onAdNotLoaded(type);
+                        }else {
+                            if (advertismentListener!=null) advertismentListener.onAdNotInitialized(type);
                         }
                         if (interstitialAdmob == null) {
                             Log.d("ADMOB", "Interstitial Ad is not Initialized");
@@ -84,7 +86,7 @@ public class Advertisement {
                         }
                     }
                 } else {
-                    if (advertismentListener!=null) advertismentListener.onAdFailed(type,"Ad is not initialized");
+                    if (advertismentListener!=null) advertismentListener.onAdNotInitialized(type);
                 }
                 break;
             case FACEBOOK:
@@ -94,6 +96,8 @@ public class Advertisement {
                     } else {
                         if (!isFailed) {
                             if (advertismentListener!=null) advertismentListener.onAdNotLoaded(type);
+                        } else {
+                            if (advertismentListener!=null) advertismentListener.onAdNotInitialized(type);
                         }
                         if (interstitialAdfb == null) {
                             Log.d("FACEBOOK", "Interstitial Ad is not Initialized");
@@ -102,7 +106,7 @@ public class Advertisement {
                         }
                     }
                 } else {
-                    if (advertismentListener!=null) advertismentListener.onAdFailed(type,"Ad is not initialized");
+                    if (advertismentListener!=null) advertismentListener.onAdNotInitialized(type);
                 }
                 break;
             case OFF:

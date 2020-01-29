@@ -7,5 +7,6 @@ public interface AdvertisementListener {
     void onAdClosed(ADTYPE adtype);
     void onAdFailed(ADTYPE adtype, String Error);
     void onAdNotLoaded(ADTYPE adtype);
+    void onAdNotInitialized(ADTYPE adtype);
     void onAdOff(ADTYPE adtype);
 }
