@@ -19,6 +19,9 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
+    <include
+        layout="@layout/admob_ad_layout" />
+
     <LinearLayout
         android:id="@+id/ad_view"
         android:layout_width="match_parent"
