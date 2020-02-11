@@ -221,6 +221,7 @@ public class Advertisement {
 
     public void ShowNativeAd(final Activity activity,
                              ADTYPE adtype,
+                             String AD_ID,
                              final LinearLayout ad_layout,
                              final int media,
                              final int icon,
@@ -234,7 +235,8 @@ public class Advertisement {
                              final int native_container,
                              final int price,
                              final int stars,
-                             final int store) {
+                             final int store,
+                             final TechnoFBNativeLayout nativeLayout) {
 
         switch (adtype){
             case ADMOB:
@@ -245,7 +247,7 @@ public class Advertisement {
                 nativeAdView.addView(adView);
 
 
-                AdLoader.Builder builder = new AdLoader.Builder(this.context, "ca-app-pub-3940256099942544/2247696110");
+                AdLoader.Builder builder = new AdLoader.Builder(this.context, AD_ID);
 
                 builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
                     // OnUnifiedNativeAdLoadedListener implementation.
@@ -281,7 +283,7 @@ public class Advertisement {
                 adLoader.loadAd(new AdRequest.Builder().build());
                 break;
             case FACEBOOK:
-                final NativeAd nativeAd = new NativeAd(this.context, "IMG_16_9_LINK#YOUR_PLACEMENT_ID");
+                final NativeAd nativeAd = new NativeAd(this.context, AD_ID);
 
                 nativeAd.setAdListener(new NativeAdListener() {
                     @Override
@@ -292,7 +294,7 @@ public class Advertisement {
                     @Override
                     public void onError(Ad ad, AdError adError) {
                         adError.getErrorMessage();
-                        ad_layout.setVisibility(View.GONE);
+                        nativeLayout.setVisibility(View.GONE);
                     }
 
                     @Override

@@ -12,13 +12,15 @@ import tvg.com.technoandy.ADTYPE;
 import tvg.com.technoandy.Advertisement;
 import tvg.com.technoandy.AdvertisementListener;
 import tvg.com.technoandy.PreferenceHelper;
+import tvg.com.technoandy.TechnoFBNativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
     PreferenceHelper preferenceHelper;
     Button btn_showad;
     Advertisement advertisement;
-    LinearLayout ad_view, admob_ad_layout, native_container;
+    LinearLayout ad_view, admob_ad_layout;
+    TechnoFBNativeLayout nativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +40,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        admob_ad_layout = findViewById(R.id.admob_ad_layout);
-        native_container = findViewById(R.id.native_container);
-
+//        admob_ad_layout = findViewById(R.id.admob_ad_layout);
+        nativeLayout = findViewById(R.id.native_container);
+//
         advertisement.ShowNativeAd(MainActivity.this,
                 ADTYPE.FACEBOOK,
-                native_container,
+                "ID",
+                null,
                 R.id.native_ad_media,
                 R.id.native_ad_icon,
                 R.layout.native_ad_layout,
@@ -56,10 +59,12 @@ public class MainActivity extends AppCompatActivity {
                 R.id.native_container,
                 0,
                 0,
-                0);
+                0,
+                nativeLayout);
 
 //        advertisement.ShowNativeAd(MainActivity.this,
 //                ADTYPE.ADMOB,
+//                "ID",
 //                admob_ad_layout,
 //                R.id.ad_media,
 //                R.id.ad_app_icon,
@@ -73,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
 //                0,
 //                R.id.ad_price,
 //                R.id.ad_stars,
-//                R.id.ad_store);
+//                R.id.ad_store,
+//                null);
 
 //        advertisement.advertismentListener = new AdvertisementListener() {
 //            @Override
