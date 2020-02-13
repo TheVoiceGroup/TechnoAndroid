@@ -25,7 +25,6 @@ public class GalleryPicker extends AppCompatActivity {
 
     private GridView grdImages;
     private Button btnSelect;
-
     private ImageAdapter imageAdapter;
     private String[] arrPath;
     private boolean[] thumbnailsselection;
@@ -36,8 +35,8 @@ public class GalleryPicker extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery_picker);
-        grdImages= (GridView) findViewById(R.id.grdImages);
-        btnSelect= (Button) findViewById(R.id.btnSelect);
+        grdImages = findViewById(R.id.grdImages);
+        btnSelect = findViewById(R.id.btnSelect);
 
         final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
         final String orderBy = MediaStore.Images.Media._ID;
@@ -59,7 +58,6 @@ public class GalleryPicker extends AppCompatActivity {
         grdImages.setAdapter(imageAdapter);
         imagecursor.close();
 
-
         btnSelect.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -75,7 +73,6 @@ public class GalleryPicker extends AppCompatActivity {
                 if (cnt == 0) {
                     Toast.makeText(getApplicationContext(), "Please select at least one image", Toast.LENGTH_LONG).show();
                 } else {
-
                     Log.d("SelectedImages", selectImages);
                     Intent i = new Intent();
                     i.putExtra("data", selectImages);
@@ -195,11 +192,6 @@ public class GalleryPicker extends AppCompatActivity {
         }
     }
 
-
-    /**
-     * Inner class
-     * @author tasol
-     */
     class ViewHolder {
         ImageView imgThumb;
         CheckBox chkImage;

@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
         btn_showad = findViewById(R.id.btn_showad);
         ad_view = findViewById(R.id.ad_view);
-        advertisement = new Advertisement(this);
-        advertisement.LoadInterstitialAd(ADTYPE.ADMOB, "ca-app-pub-3940256099942544/1033173712");
-        advertisement.ShowBannerAd(ADTYPE.ADMOB, ad_view, "ca-app-pub-3940256099942544/6300978111");
+//        advertisement = new Advertisement(this);
+//        advertisement.LoadInterstitialAd(ADTYPE.ADMOB, "ca-app-pub-3940256099942544/1033173712");
+//        advertisement.ShowBannerAd(ADTYPE.ADMOB, ad_view, "ca-app-pub-3940256099942544/6300978111");
 
         btn_showad.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,24 +43,24 @@ public class MainActivity extends AppCompatActivity {
 //        admob_ad_layout = findViewById(R.id.admob_ad_layout);
         nativeLayout = findViewById(R.id.native_container);
 //
-        advertisement.ShowNativeAd(MainActivity.this,
-                ADTYPE.FACEBOOK,
-                "ID",
-                null,
-                R.id.native_ad_media,
-                R.id.native_ad_icon,
-                R.layout.native_ad_layout,
-                R.id.ad_choices_container,
-                R.id.native_ad_title,
-                R.id.native_ad_social_context,
-                R.id.native_ad_body,
-                R.id.native_ad_sponsored_label,
-                R.id.native_ad_call_to_action,
-                R.id.native_container,
-                0,
-                0,
-                0,
-                nativeLayout);
+//        advertisement.ShowNativeAd(MainActivity.this,
+//                ADTYPE.FACEBOOK,
+//                "ID",
+//                null,
+//                R.id.native_ad_media,
+//                R.id.native_ad_icon,
+//                R.layout.native_ad_layout,
+//                R.id.ad_choices_container,
+//                R.id.native_ad_title,
+//                R.id.native_ad_social_context,
+//                R.id.native_ad_body,
+//                R.id.native_ad_sponsored_label,
+//                R.id.native_ad_call_to_action,
+//                R.id.native_container,
+//                0,
+//                0,
+//                0,
+//                nativeLayout);
 
 //        advertisement.ShowNativeAd(MainActivity.this,
 //                ADTYPE.ADMOB,
