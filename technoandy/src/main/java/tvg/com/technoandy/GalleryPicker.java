@@ -1,10 +1,13 @@
 package tvg.com.technoandy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -29,18 +32,26 @@ public class GalleryPicker extends AppCompatActivity {
     private String[] arrPath;
     private boolean[] thumbnailsselection;
     private int ids[];
-    private int count;
+    private int count, uncheckcolor, checkedcolor, max, min;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery_picker);
+
+        Intent intent = getIntent();
+        uncheckcolor = intent.getIntExtra("SECONDARY",android.R.color.darker_gray);
+        checkedcolor = intent.getIntExtra("PRIMARY", android.R.color.darker_gray);
+        max = intent.getIntExtra("MAX", 1);
+        min = intent.getIntExtra("MIN", 1);
+
+
         grdImages = findViewById(R.id.grdImages);
         btnSelect = findViewById(R.id.btnSelect);
 
         final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
         final String orderBy = MediaStore.Images.Media._ID;
-        @SuppressWarnings("deprecation")
+
         Cursor imagecursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
         int image_column_index = imagecursor.getColumnIndex(MediaStore.Images.Media._ID);
         this.count = imagecursor.getCount();
@@ -148,7 +159,7 @@ public class GalleryPicker extends AppCompatActivity {
                 convertView = mInflater.inflate(R.layout.gallery_item, null);
                 holder.imgThumb = convertView.findViewById(R.id.imgThumb);
                 holder.chkImage = convertView.findViewById(R.id.chkImage);
-
+                setCheckBoxColor(holder.chkImage, uncheckcolor, checkedcolor);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -194,8 +205,21 @@ public class GalleryPicker extends AppCompatActivity {
 
     class ViewHolder {
         ImageView imgThumb;
-        CheckBox chkImage;
+        AppCompatCheckBox chkImage;
         int id;
     }
 
+    public  void setCheckBoxColor(AppCompatCheckBox checkBox, int uncheckedColor, int checkedColor) {
+        ColorStateList colorStateList = new ColorStateList(
+                new int[][] {
+                        new int[] { -android.R.attr.state_checked }, // unchecked
+                        new int[] {  android.R.attr.state_checked }  // checked
+                },
+                new int[] {
+                        ContextCompat.getColor(this, uncheckedColor),
+                        ContextCompat.getColor(this, checkedColor)
+                }
+        );
+        checkBox.setSupportButtonTintList(colorStateList);
+    }
 }
