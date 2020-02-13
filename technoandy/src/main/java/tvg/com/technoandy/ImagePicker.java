@@ -64,7 +64,7 @@ public class ImagePicker implements ActivityResult {
 
     @Override
     public void onImageActivityResult(int RequestCode, int ResultCode, Intent intent) {
-        if(RequestCode == 1){
+        if(RequestCode == 1 && intent!=null){
             ArrayList<Bitmap> bitmaps = new ArrayList<>();
             String[] imagesPath = intent.getStringExtra("data").split("\\|");
             ArrayList<String> images = new ArrayList<>();
@@ -77,7 +77,7 @@ public class ImagePicker implements ActivityResult {
 
             imageResult.onImageResult(images, null, null, bitmaps);
 
-        } else if (RequestCode == 2){
+        } else if (RequestCode == 2 && intent!=null){
             String uri = outPutfileUri.toString();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), outPutfileUri);
