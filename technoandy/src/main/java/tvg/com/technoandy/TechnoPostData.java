@@ -15,6 +15,7 @@ public class TechnoPostData extends AsyncTask<Void,Void,String> {
     private String progressmessage = "Please wait while your data is uploading";
     private String PostUrl;
     private HashMap<String, String> parameters;
+    public PostResult postResult;
 
     public TechnoPostData(Context context, String PostUrl){
         this.context = context;
@@ -35,6 +36,7 @@ public class TechnoPostData extends AsyncTask<Void,Void,String> {
         super.onPostExecute(s);
         if (progress){
             progressDialog.dismiss();
+            postResult.onPost(s);
         }
     }
 
@@ -59,5 +61,9 @@ public class TechnoPostData extends AsyncTask<Void,Void,String> {
 
     public void Data(Parameters parameters){
         this.parameters = parameters.getParams();
+    }
+
+    public interface PostResult{
+        void onPost(String s);
     }
 }
