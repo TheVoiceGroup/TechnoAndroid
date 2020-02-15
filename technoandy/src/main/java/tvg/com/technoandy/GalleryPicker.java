@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class GalleryPicker extends AppCompatActivity {
 
     private GridView grdImages;
@@ -33,8 +36,10 @@ public class GalleryPicker extends AppCompatActivity {
     private String[] arrPath;
     private boolean[] thumbnailsselection;
     private int ids[];
-    private int count, colorSecondary, colorPrimary, colorText, max, min, size = 0;
+    private int count, max, min, size = 0;
     private TextView txt_images_count;
+    private String colorPrimary, colorSecondary, colorText;
+    private ArrayList<Integer> numbers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +47,9 @@ public class GalleryPicker extends AppCompatActivity {
         setContentView(R.layout.activity_gallery_picker);
 
         Intent intent = getIntent();
-        colorSecondary = intent.getIntExtra("SECONDARY",android.R.color.black);
-        colorPrimary = intent.getIntExtra("PRIMARY", android.R.color.black);
-        colorText = intent.getIntExtra("TEXT", android.R.color.white);
+        colorSecondary = intent.getStringExtra("SECONDARY");
+        colorPrimary = intent.getStringExtra("PRIMARY");
+        colorText = intent.getStringExtra("TEXT");
         max = intent.getIntExtra("MAX", 1);
         min = intent.getIntExtra("MIN", 1);
 
@@ -53,10 +58,12 @@ public class GalleryPicker extends AppCompatActivity {
         btnCancel = findViewById(R.id.btnCancel);
         txt_images_count = findViewById(R.id.txt_images_count);
 
-        btnSelect.setBackgroundColor(colorPrimary);
-        btnCancel.setBackgroundColor(colorPrimary);
-        txt_images_count.setBackgroundColor(colorPrimary);
-        txt_images_count.setTextColor(colorText);
+        btnSelect.setBackgroundColor(Color.parseColor(colorPrimary));
+        btnCancel.setBackgroundColor(Color.parseColor(colorPrimary));
+        btnSelect.setTextColor(Color.parseColor(colorText));
+        btnCancel.setTextColor(Color.parseColor(colorText));
+        txt_images_count.setBackgroundColor(Color.parseColor(colorPrimary));
+        txt_images_count.setTextColor(Color.parseColor(colorText));
 
         final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
         final String orderBy = MediaStore.Images.Media._ID;
@@ -147,6 +154,12 @@ public class GalleryPicker extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        super.onBackPressed();
+    }
+
     /**
      * List adapter
      * @author tasol
@@ -178,7 +191,7 @@ public class GalleryPicker extends AppCompatActivity {
                 convertView = mInflater.inflate(R.layout.gallery_item, null);
                 holder.imgThumb = convertView.findViewById(R.id.imgThumb);
                 holder.chkImage = convertView.findViewById(R.id.chkImage);
-                setCheckBoxColor(holder.chkImage, colorSecondary, colorPrimary);
+                setCheckBoxColor(holder.chkImage, Color.parseColor(colorSecondary), Color.parseColor(colorPrimary));
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -192,15 +205,15 @@ public class GalleryPicker extends AppCompatActivity {
                     int id = cb.getId();
                     if (thumbnailsselection[id]) {
                         size--;
-                        txt_images_count.setText(size + "Images Selected");
+                        txt_images_count.setText(size + " Images Selected");
                         cb.setChecked(false);
                         thumbnailsselection[id] = false;
                     } else {
-                        size++;
-                        txt_images_count.setText(size + "Images Selected");
                         if (size>=max) {
                             Toast.makeText(GalleryPicker.this, "You've Reached maximum limit", Toast.LENGTH_SHORT).show();
                         }else {
+                            size++;
+                            txt_images_count.setText(size + " Images Selected");
                             cb.setChecked(true);
                             thumbnailsselection[id] = true;
                         }
@@ -213,13 +226,15 @@ public class GalleryPicker extends AppCompatActivity {
                     int id = holder.chkImage.getId();
                     if (thumbnailsselection[id]) {
                         size--;
+                        txt_images_count.setText(size + " Images Selected");
                         holder.chkImage.setChecked(false);
                         thumbnailsselection[id] = false;
                     } else {
-                        size++;
                         if (size>=max) {
                             Toast.makeText(GalleryPicker.this, "You've Reached maximum limit", Toast.LENGTH_SHORT).show();
                         }else {
+                            size++;
+                            txt_images_count.setText(size + " Images Selected");
                             holder.chkImage.setChecked(true);
                             thumbnailsselection[id] = true;
                         }
@@ -228,6 +243,7 @@ public class GalleryPicker extends AppCompatActivity {
             });
             try {
                 setBitmap(holder.imgThumb, ids[position]);
+                numbers.add(position);
             } catch (Throwable e) {
             }
             holder.chkImage.setChecked(thumbnailsselection[position]);
@@ -249,8 +265,8 @@ public class GalleryPicker extends AppCompatActivity {
                         new int[] {  android.R.attr.state_checked }  // checked
                 },
                 new int[] {
-                        ContextCompat.getColor(this, uncheckedColor),
-                        ContextCompat.getColor(this, checkedColor)
+                        uncheckedColor,
+                        checkedColor
                 }
         );
         checkBox.setSupportButtonTintList(colorStateList);

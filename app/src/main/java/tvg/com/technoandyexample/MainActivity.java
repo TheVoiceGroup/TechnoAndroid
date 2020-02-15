@@ -11,32 +11,43 @@ import android.widget.Toast;
 import tvg.com.technoandy.ADTYPE;
 import tvg.com.technoandy.Advertisement;
 import tvg.com.technoandy.AdvertisementListener;
+import tvg.com.technoandy.ImagePicker;
 import tvg.com.technoandy.PreferenceHelper;
 import tvg.com.technoandy.TechnoFBNativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
     PreferenceHelper preferenceHelper;
-    Button btn_showad;
+    Button btn_capture, btn_select;
     Advertisement advertisement;
     LinearLayout ad_view, admob_ad_layout;
     TechnoFBNativeLayout nativeLayout;
+    ImagePicker imagePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btn_showad = findViewById(R.id.btn_showad);
+        btn_capture = findViewById(R.id.btn_capture);
+        btn_select = findViewById(R.id.btn_select);
         ad_view = findViewById(R.id.ad_view);
+        imagePicker = new ImagePicker(this);
 //        advertisement = new Advertisement(this);
 //        advertisement.LoadInterstitialAd(ADTYPE.ADMOB, "ca-app-pub-3940256099942544/1033173712");
 //        advertisement.ShowBannerAd(ADTYPE.ADMOB, ad_view, "ca-app-pub-3940256099942544/6300978111");
 
-        btn_showad.setOnClickListener(new View.OnClickListener() {
+        btn_capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                advertisement.ShowInterstitialAD(ADTYPE.ADMOB);
+                imagePicker.CaptureImageFromCamera();
+            }
+        });
+
+        btn_select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagePicker.SelectImageFromGallery("#000000", "#000000","#ffffff", 1,1);
             }
         });
 

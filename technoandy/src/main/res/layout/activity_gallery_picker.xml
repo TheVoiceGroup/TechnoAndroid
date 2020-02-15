@@ -27,29 +27,29 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="56dp"
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
             android:text="Cancel"
-            android:layout_marginTop="5dp"
             android:background="#1F1B1B"
             android:textColor="#ffffff"
             android:layout_weight="1"
+            android:gravity="center"
             android:layout_marginRight="0.5dp"
             android:layout_marginLeft="0.5dp"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSelect"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
             android:text="Select"
+            android:gravity="center"
             android:textColor="#ffffff"
-            android:layout_marginTop="5dp"
             android:background="#1F1B1B"
             android:layout_weight="1"
             android:layout_marginLeft="0.5dp"

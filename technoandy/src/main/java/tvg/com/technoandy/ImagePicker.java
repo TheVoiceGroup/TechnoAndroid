@@ -32,7 +32,7 @@ public class ImagePicker implements ActivityResult {
         this.activity = activity;
     }
 
-    public void SelectImageFromGallery(int secondaryColor, int primaryColor, int textColor, int maxvalue, int minvalue){
+    public void SelectImageFromGallery(String secondaryColor, String primaryColor, String textColor, int maxvalue, int minvalue){
         Intent intent = new Intent(activity,GalleryPicker.class);
         intent.putExtra("SECONDARY", secondaryColor);
         intent.putExtra("PRIMARY", primaryColor);
