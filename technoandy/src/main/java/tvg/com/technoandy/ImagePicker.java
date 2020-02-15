@@ -84,7 +84,7 @@ public class ImagePicker implements ActivityResult {
 
             imageResult.onImageResult(images, null, null, bitmaps);
 
-        } else if (RequestCode == CAMERA_REQUEST && intent!=null){
+        } else if (RequestCode == CAMERA_REQUEST){
             String uri = outPutfileUri.toString();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), outPutfileUri);
