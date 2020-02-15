@@ -4,6 +4,18 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_images_count"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="No Images Selected"
+        android:textColor="#ffffff"
+        android:background="#1F1B1B"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="15sp"/>
+
     <GridView
         android:id="@+id/grdImages"
         android:layout_width="match_parent"
@@ -13,11 +25,36 @@
         android:stretchMode="columnWidth"
         android:gravity="center" />
 
-    <Button
-        android:id="@+id/btnSelect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select"
-        android:layout_marginTop="5dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:text="Cancel"
+            android:layout_marginTop="5dp"
+            android:background="#1F1B1B"
+            android:textColor="#ffffff"
+            android:layout_weight="1"
+            android:layout_marginRight="0.5dp"
+            android:layout_marginLeft="0.5dp"/>
+
+        <Button
+            android:id="@+id/btnSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:text="Select"
+            android:textColor="#ffffff"
+            android:layout_marginTop="5dp"
+            android:background="#1F1B1B"
+            android:layout_weight="1"
+            android:layout_marginLeft="0.5dp"
+            android:layout_marginRight="0.5dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>

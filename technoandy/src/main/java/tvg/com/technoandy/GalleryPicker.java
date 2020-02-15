@@ -22,17 +22,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class GalleryPicker extends AppCompatActivity {
 
     private GridView grdImages;
-    private Button btnSelect;
+    private Button btnSelect, btnCancel;
     private ImageAdapter imageAdapter;
     private String[] arrPath;
     private boolean[] thumbnailsselection;
     private int ids[];
-    private int count, uncheckcolor, checkedcolor, max, min;
+    private int count, colorSecondary, colorPrimary, colorText, max, min, size = 0;
+    private TextView txt_images_count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +42,21 @@ public class GalleryPicker extends AppCompatActivity {
         setContentView(R.layout.activity_gallery_picker);
 
         Intent intent = getIntent();
-        uncheckcolor = intent.getIntExtra("SECONDARY",android.R.color.darker_gray);
-        checkedcolor = intent.getIntExtra("PRIMARY", android.R.color.darker_gray);
+        colorSecondary = intent.getIntExtra("SECONDARY",android.R.color.black);
+        colorPrimary = intent.getIntExtra("PRIMARY", android.R.color.black);
+        colorText = intent.getIntExtra("TEXT", android.R.color.white);
         max = intent.getIntExtra("MAX", 1);
         min = intent.getIntExtra("MIN", 1);
 
-
         grdImages = findViewById(R.id.grdImages);
         btnSelect = findViewById(R.id.btnSelect);
+        btnCancel = findViewById(R.id.btnCancel);
+        txt_images_count = findViewById(R.id.txt_images_count);
+
+        btnSelect.setBackgroundColor(colorPrimary);
+        btnCancel.setBackgroundColor(colorPrimary);
+        txt_images_count.setBackgroundColor(colorPrimary);
+        txt_images_count.setTextColor(colorText);
 
         final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
         final String orderBy = MediaStore.Images.Media._ID;
@@ -83,13 +92,23 @@ public class GalleryPicker extends AppCompatActivity {
                 }
                 if (cnt == 0) {
                     Toast.makeText(getApplicationContext(), "Please select at least one image", Toast.LENGTH_LONG).show();
-                } else {
+                } else if (cnt >= 5) {
+                    Toast.makeText(getApplicationContext(), "Please select images between" + min + " and " + max, Toast.LENGTH_LONG).show();
+                }else {
                     Log.d("SelectedImages", selectImages);
                     Intent i = new Intent();
                     i.putExtra("data", selectImages);
                     setResult(Activity.RESULT_OK, i);
                     finish();
                 }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(Activity.RESULT_CANCELED);
+                GalleryPicker.super.onBackPressed();
             }
         });
     }
@@ -159,7 +178,7 @@ public class GalleryPicker extends AppCompatActivity {
                 convertView = mInflater.inflate(R.layout.gallery_item, null);
                 holder.imgThumb = convertView.findViewById(R.id.imgThumb);
                 holder.chkImage = convertView.findViewById(R.id.chkImage);
-                setCheckBoxColor(holder.chkImage, uncheckcolor, checkedcolor);
+                setCheckBoxColor(holder.chkImage, colorSecondary, colorPrimary);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -172,11 +191,19 @@ public class GalleryPicker extends AppCompatActivity {
                     CheckBox cb = (CheckBox) v;
                     int id = cb.getId();
                     if (thumbnailsselection[id]) {
+                        size--;
+                        txt_images_count.setText(size + "Images Selected");
                         cb.setChecked(false);
                         thumbnailsselection[id] = false;
                     } else {
-                        cb.setChecked(true);
-                        thumbnailsselection[id] = true;
+                        size++;
+                        txt_images_count.setText(size + "Images Selected");
+                        if (size>=max) {
+                            Toast.makeText(GalleryPicker.this, "You've Reached maximum limit", Toast.LENGTH_SHORT).show();
+                        }else {
+                            cb.setChecked(true);
+                            thumbnailsselection[id] = true;
+                        }
                     }
                 }
             });
@@ -185,11 +212,17 @@ public class GalleryPicker extends AppCompatActivity {
                 public void onClick(View v) {
                     int id = holder.chkImage.getId();
                     if (thumbnailsselection[id]) {
+                        size--;
                         holder.chkImage.setChecked(false);
                         thumbnailsselection[id] = false;
                     } else {
-                        holder.chkImage.setChecked(true);
-                        thumbnailsselection[id] = true;
+                        size++;
+                        if (size>=max) {
+                            Toast.makeText(GalleryPicker.this, "You've Reached maximum limit", Toast.LENGTH_SHORT).show();
+                        }else {
+                            holder.chkImage.setChecked(true);
+                            thumbnailsselection[id] = true;
+                        }
                     }
                 }
             });
