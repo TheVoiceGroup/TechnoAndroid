@@ -41,4 +41,5 @@ dependencies {
     implementation('com.facebook.android:audience-network-sdk:5.5.0') {
         exclude group: "com.google.android.gms"
     }
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }

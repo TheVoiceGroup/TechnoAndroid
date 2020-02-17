@@ -88,6 +88,11 @@ public class ImagePicker implements ActivityResult {
             String uri = outPutfileUri.toString();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), outPutfileUri);
+                if (bitmap.getHeight()>800 && bitmap.getHeight()<1500){
+                    bitmap = scaleDown(bitmap, bitmap.getHeight()/2, true);
+                } else if (bitmap.getHeight()>1500){
+                    bitmap = scaleDown(bitmap, bitmap.getHeight()/3, true);
+                }
                 imageResult.onImageResult(null, uri, bitmap, null);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -136,4 +141,16 @@ public class ImagePicker implements ActivityResult {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
+                                   boolean filter) {
+        float ratio = Math.min(
+                (float) maxImageSize / realImage.getWidth(),
+                (float) maxImageSize / realImage.getHeight());
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+                height, filter);
+        return newBitmap;
+    }
 }

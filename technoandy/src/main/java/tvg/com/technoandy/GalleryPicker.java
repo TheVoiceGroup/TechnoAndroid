@@ -1,8 +1,11 @@
 package tvg.com.technoandy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +13,9 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -26,11 +31,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class GalleryPicker extends AppCompatActivity {
 
-    private GridView grdImages;
+    private RecyclerView grdImages;
     private Button btnSelect, btnCancel;
     private ImageAdapter imageAdapter;
     private String[] arrPath;
@@ -39,7 +46,8 @@ public class GalleryPicker extends AppCompatActivity {
     private int count, max, min, size = 0;
     private TextView txt_images_count;
     private String colorPrimary, colorSecondary, colorText;
-    private ArrayList<Integer> numbers = new ArrayList<>();
+    private ArrayList<Bitmap> bitmaps = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,9 @@ public class GalleryPicker extends AppCompatActivity {
         min = intent.getIntExtra("MIN", 1);
 
         grdImages = findViewById(R.id.grdImages);
+        grdImages.setLayoutManager(new GridLayoutManager(this, 3));
+        grdImages.setHasFixedSize(false);
+        grdImages.getRecycledViewPool().setMaxRecycledViews(0, 0);
         btnSelect = findViewById(R.id.btnSelect);
         btnCancel = findViewById(R.id.btnCancel);
         txt_images_count = findViewById(R.id.txt_images_count);
@@ -68,7 +79,7 @@ public class GalleryPicker extends AppCompatActivity {
         final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
         final String orderBy = MediaStore.Images.Media._ID;
 
-        Cursor imagecursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
+        Cursor imagecursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy + " DESC");
         int image_column_index = imagecursor.getColumnIndex(MediaStore.Images.Media._ID);
         this.count = imagecursor.getCount();
         this.arrPath = new String[this.count];
@@ -79,9 +90,11 @@ public class GalleryPicker extends AppCompatActivity {
             ids[i] = imagecursor.getInt(image_column_index);
             int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
             arrPath[i] = imagecursor.getString(dataColumnIndex);
+            Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(getApplicationContext().getContentResolver(), ids[i], MediaStore.Images.Thumbnails.MICRO_KIND, null);
+            bitmaps.add(bitmap);
         }
 
-        imageAdapter = new ImageAdapter();
+        imageAdapter = new ImageAdapter(bitmaps);
         grdImages.setAdapter(imageAdapter);
         imagecursor.close();
 
@@ -126,16 +139,6 @@ public class GalleryPicker extends AppCompatActivity {
 
     }
 
-    /**
-     * Class method
-     */
-
-    /**
-     * This method used to set bitmap.
-     * @param iv represented ImageView
-     * @param id represented id
-     */
-
     private void setBitmap(final ImageView iv, final int id) {
 
         new AsyncTask<Void, Void, Bitmap>() {
@@ -165,41 +168,29 @@ public class GalleryPicker extends AppCompatActivity {
      * @author tasol
      */
 
-    public class ImageAdapter extends BaseAdapter {
+    public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
         private LayoutInflater mInflater;
+        private ArrayList<Bitmap> bitmaps;
 
-        public ImageAdapter() {
+        public ImageAdapter(ArrayList<Bitmap> bitmaps) {
+            this.bitmaps = bitmaps;
             mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        public int getCount() {
-            return count;
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false);
+            return new ViewHolder(v);
         }
 
-        public Object getItem(int position) {
-            return position;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final ViewHolder holder;
-            if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = mInflater.inflate(R.layout.gallery_item, null);
-                holder.imgThumb = convertView.findViewById(R.id.imgThumb);
-                holder.chkImage = convertView.findViewById(R.id.chkImage);
-                setCheckBoxColor(holder.chkImage, Color.parseColor(colorSecondary), Color.parseColor(colorPrimary));
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
+        @Override
+        public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+            holder.setIsRecyclable(false);
+            setCheckBoxColor(holder.chkImage, Color.parseColor(colorSecondary), Color.parseColor(colorPrimary));
             holder.chkImage.setId(position);
             holder.imgThumb.setId(position);
             holder.chkImage.setOnClickListener(new View.OnClickListener() {
-
                 public void onClick(View v) {
                     CheckBox cb = (CheckBox) v;
                     int id = cb.getId();
@@ -221,7 +212,6 @@ public class GalleryPicker extends AppCompatActivity {
                 }
             });
             holder.imgThumb.setOnClickListener(new View.OnClickListener() {
-
                 public void onClick(View v) {
                     int id = holder.chkImage.getId();
                     if (thumbnailsselection[id]) {
@@ -242,20 +232,41 @@ public class GalleryPicker extends AppCompatActivity {
                 }
             });
             try {
-                setBitmap(holder.imgThumb, ids[position]);
-                numbers.add(position);
+                holder.imgThumb.setImageBitmap(bitmaps.get(position));
             } catch (Throwable e) {
             }
             holder.chkImage.setChecked(thumbnailsselection[position]);
-            holder.id = position;
-            return convertView;
         }
-    }
 
-    class ViewHolder {
-        ImageView imgThumb;
-        AppCompatCheckBox chkImage;
-        int id;
+        @Override
+        public int getItemCount() {
+            return count;
+        }
+
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            final ViewHolder holder;
+////            if (convertView == null) {
+//                holder = new ViewHolder();
+//                convertView = mInflater.inflate(R.layout.gallery_item, parent, false);
+//                holder.imgThumb = convertView.findViewById(R.id.imgThumb);
+//                holder.chkImage = convertView.findViewById(R.id.chkImage);
+//                setCheckBoxColor(holder.chkImage, Color.parseColor(colorSecondary), Color.parseColor(colorPrimary));
+//                convertView.setTag(holder);
+//            //}
+//
+//            return convertView;
+//        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            ImageView imgThumb;
+            AppCompatCheckBox chkImage;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                imgThumb = itemView.findViewById(R.id.imgThumb);
+                chkImage = itemView.findViewById(R.id.chkImage);
+            }
+        }
     }
 
     public  void setCheckBoxColor(AppCompatCheckBox checkBox, int uncheckedColor, int checkedColor) {
