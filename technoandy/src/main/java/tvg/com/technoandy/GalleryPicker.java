@@ -112,8 +112,6 @@ public class GalleryPicker extends AppCompatActivity {
                 }
                 if (cnt == 0) {
                     Toast.makeText(getApplicationContext(), "Please select at least one image", Toast.LENGTH_LONG).show();
-                } else if (cnt >= max) {
-                    Toast.makeText(getApplicationContext(), "Please select images between" + min + " and " + max, Toast.LENGTH_LONG).show();
                 }else {
                     Log.d("SelectedImages", selectImages);
                     Intent i = new Intent();

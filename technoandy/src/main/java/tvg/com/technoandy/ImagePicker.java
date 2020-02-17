@@ -43,6 +43,7 @@ public class ImagePicker implements ActivityResult {
     }
 
     public void CaptureImageFromCamera(){
+        String image_path = String.valueOf(createImageFile());
         Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory(), "tempphoto.jpg");
         outPutfileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", createImageFile());
@@ -57,7 +58,7 @@ public class ImagePicker implements ActivityResult {
             String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
             String imageFileName = "JPEG_" + timeStamp + "_";
             File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
+            imageFile = File.createTempFile("TEMP", ".jpg", storageDir);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,7 +99,7 @@ public class ImagePicker implements ActivityResult {
                 } else if (bitmap.getHeight()>1500){
                     bitmap = scaleDown(bitmap, bitmap.getHeight()/3, true);
                 }
-                imageResult.onImageResult(null, uri, modifyOrientation(bitmap, uri), null);
+                imageResult.onImageResult(null, uri, modifyOrientation(bitmap, String.valueOf(createImageFile())), null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
