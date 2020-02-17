@@ -93,7 +93,7 @@ public class ImagePicker implements ActivityResult {
                 } else if (bitmap.getHeight()>1500){
                     bitmap = scaleDown(bitmap, bitmap.getHeight()/3, true);
                 }
-                imageResult.onImageResult(null, uri, bitmap, null);
+                imageResult.onImageResult(null, uri, modifyOrientation(bitmap, uri), null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
