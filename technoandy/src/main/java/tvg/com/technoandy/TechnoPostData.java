@@ -36,6 +36,8 @@ public class TechnoPostData extends AsyncTask<Void,Void,String> {
         super.onPostExecute(s);
         if (progress){
             progressDialog.dismiss();
+        }
+        if (postResult!=null) {
             postResult.onPost(s);
         }
     }

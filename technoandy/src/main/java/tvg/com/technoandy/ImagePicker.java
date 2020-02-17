@@ -76,6 +76,11 @@ public class ImagePicker implements ActivityResult {
                 images.add(imagesPath[i]);
                 bitmap = BitmapFactory.decodeFile(imagesPath[i]);
                 try {
+                    if (bitmap.getHeight()>800 && bitmap.getHeight()<1500){
+                        bitmap = scaleDown(bitmap, bitmap.getHeight()/2, true);
+                    } else if (bitmap.getHeight()>1500){
+                        bitmap = scaleDown(bitmap, bitmap.getHeight()/3, true);
+                    }
                     bitmaps.add(modifyOrientation(bitmap, imagesPath[i]));
                 } catch (IOException e) {
                     e.printStackTrace();
