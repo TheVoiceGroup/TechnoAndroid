@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 
@@ -14,6 +15,7 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,7 +84,7 @@ public class ImagePicker implements ActivityResult {
                     } else if (bitmap.getHeight()>1500){
                         bitmap = scaleDown(bitmap, bitmap.getHeight()/3, true);
                     }
-                    bitmaps.add(modifyOrientation(bitmap, imagesPath[i]));
+                    bitmaps.add(modifyOrientation(bitmap, imagesPath[i], Uri.parse(imagesPath[i])));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -99,7 +101,7 @@ public class ImagePicker implements ActivityResult {
                 } else if (bitmap.getHeight()>1500){
                     bitmap = scaleDown(bitmap, bitmap.getHeight()/3, true);
                 }
-                imageResult.onImageResult(null, uri, modifyOrientation(bitmap, String.valueOf(createImageFile())), null);
+                imageResult.onImageResult(null, uri, modifyOrientation(bitmap, String.valueOf(createImageFile()), outPutfileUri), null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -110,8 +112,13 @@ public class ImagePicker implements ActivityResult {
         void onImageResult(ArrayList<String> imagesPathList, String ImagePath, Bitmap bitmap, ArrayList<Bitmap> bitmaps);
     }
 
-    public static Bitmap modifyOrientation(Bitmap bitmap, String image_absolute_path) throws IOException {
-        ExifInterface ei = new ExifInterface(image_absolute_path);
+    public Bitmap modifyOrientation(Bitmap bitmap, String image_absolute_path, Uri imageURI) throws IOException {
+        InputStream input = activity.getContentResolver().openInputStream(imageURI);
+        ExifInterface ei;
+        if (Build.VERSION.SDK_INT > 23)
+            ei = new ExifInterface(input);
+        else
+            ei = new ExifInterface(image_absolute_path);
         int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
         switch (orientation) {
