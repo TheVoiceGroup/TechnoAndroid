@@ -90,8 +90,8 @@ public class GalleryPicker extends AppCompatActivity {
             ids[i] = imagecursor.getInt(image_column_index);
             int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
             arrPath[i] = imagecursor.getString(dataColumnIndex);
-            Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(getApplicationContext().getContentResolver(), ids[i], MediaStore.Images.Thumbnails.MICRO_KIND, null);
-            bitmaps.add(bitmap);
+//            Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(getApplicationContext().getContentResolver(), ids[i], MediaStore.Images.Thumbnails.MICRO_KIND, null);
+//            bitmaps.add(bitmap);
         }
 
         imageAdapter = new ImageAdapter(bitmaps);
@@ -230,7 +230,8 @@ public class GalleryPicker extends AppCompatActivity {
                 }
             });
             try {
-                holder.imgThumb.setImageBitmap(bitmaps.get(position));
+                setBitmap(holder.imgThumb, ids[position]);
+                //holder.imgThumb.setImageBitmap(bitmaps.get(position));
             } catch (Throwable e) {
             }
             holder.chkImage.setChecked(thumbnailsselection[position]);
