@@ -84,14 +84,14 @@ public class ImagePicker implements ActivityResult {
                     } else if (bitmap.getHeight()>1500){
                         bitmap = scaleDown(bitmap, bitmap.getHeight()/3, true);
                     }
-                    bitmaps.add(modifyOrientation(bitmap, imagesPath[i], Uri.parse(imagesPath[i])));
+                    Uri uri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", new File(imagesPath[i]));
+                    bitmaps.add(modifyOrientation(bitmap, imagesPath[i], uri));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
             imageResult.onImageResult(images, null, null, bitmaps);
-
         } else if (RequestCode == CAMERA_REQUEST){
             String uri = outPutfileUri.toString();
             try {
