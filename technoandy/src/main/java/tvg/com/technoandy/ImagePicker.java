@@ -93,8 +93,8 @@ public class ImagePicker implements ActivityResult {
 
             imageResult.onImageResult(images, null, null, bitmaps);
         } else if (RequestCode == CAMERA_REQUEST){
-            String uri = outPutfileUri.toString();
             try {
+                String uri = outPutfileUri.toString();
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), outPutfileUri);
                 if (bitmap.getHeight()>800 && bitmap.getHeight()<1500){
                     bitmap = scaleDown(bitmap, bitmap.getHeight()/2, true);
@@ -103,6 +103,8 @@ public class ImagePicker implements ActivityResult {
                 }
                 imageResult.onImageResult(null, uri, modifyOrientation(bitmap, String.valueOf(createImageFile()), outPutfileUri), null);
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NullPointerException e){
                 e.printStackTrace();
             }
         }

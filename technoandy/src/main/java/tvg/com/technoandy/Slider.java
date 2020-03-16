@@ -1,6 +1,7 @@
 package tvg.com.technoandy;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,16 @@ public class Slider extends PagerAdapter {
 
     private Context context;
     private ArrayList<String> data;
+    private ArrayList<Bitmap> images;
     private  int layout, image_res;
-    private boolean StringList, StringLayoutList;
+    private boolean StringList, StringLayoutList, bitmaps;
 
     public Slider(Context context, ArrayList<String> data){
         this.context = context;
         this.data = data;
         StringList = true;
         StringLayoutList = false;
+        bitmaps = false;
     }
 
     public Slider(Context context, ArrayList<String> data, int layout, int imageres){
@@ -34,6 +37,17 @@ public class Slider extends PagerAdapter {
         this.image_res = imageres;
         StringList = false;
         StringLayoutList = true;
+        bitmaps = false;
+    }
+
+    public Slider(Context context, ArrayList<Bitmap> images, int layout, int image_res, int flags){
+        this.context = context;
+        this.images = images;
+        this.layout = layout;
+        this.image_res = image_res;
+        StringList = false;
+        StringLayoutList = false;
+        bitmaps = true;
     }
 
     @Override
@@ -61,10 +75,16 @@ public class Slider extends PagerAdapter {
             Picasso.get().load(data.get(position)).into(imageView);
             container.addView(view);
             return view;
-        }else if (StringLayoutList){
+        }else if (StringLayoutList) {
             View view = LayoutInflater.from(context).inflate(layout, null);
             ImageView imageView = view.findViewById(image_res);
             Picasso.get().load(data.get(position)).into(imageView);
+            container.addView(view);
+            return view;
+        } else if (bitmaps) {
+            View view = LayoutInflater.from(context).inflate(layout, null);
+            ImageView imageView = view.findViewById(image_res);
+            imageView.setImageBitmap(images.get(position));
             container.addView(view);
             return view;
         }else {
