@@ -56,7 +56,9 @@ public class Slider extends PagerAdapter {
             return data.size();
         }else if (StringLayoutList){
             return data.size();
-        }else {
+        }else if(bitmaps) {
+            return images.size();
+        } else {
             return 0;
         }
     }
