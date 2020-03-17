@@ -3,6 +3,7 @@ package tvg.com.technoandy;
 import android.content.Context;
 import android.widget.EditText;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Utilities {
@@ -28,6 +29,16 @@ public class Utilities {
             return "Success";
         }else {
             return "Failed";
+        }
+    }
+
+    public String FormatNumber(String number){
+        try {
+            double amount = Double.parseDouble(number);
+            DecimalFormat formatter = new DecimalFormat("#,###");
+            return formatter.format(amount);
+        }catch (NumberFormatException e){
+            return "N/A";
         }
     }
 }
